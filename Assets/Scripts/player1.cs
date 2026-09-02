@@ -6,6 +6,8 @@ public class player1 : MonoBehaviour
     [SerializeField] float jumpForce;
     [SerializeField] float speed;
     Rigidbody2D rb2d;
+
+    [SerializeField] bool jumping;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,9 +27,18 @@ public class player1 : MonoBehaviour
             transform.Translate(Vector2.right * Time.deltaTime * speed);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.Space) && jumping)
         {
             rb2d.AddForce(Vector2.up * jumpForce);
+            jumping = false;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            jumping = true;
         }
     }
 }
